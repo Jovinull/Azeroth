@@ -3,10 +3,13 @@ package main;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.EnumMap;
+import java.util.Map;
+import java.awt.event.KeyEvent;
 
 /**
  * Classe de configuração dinâmica do jogo.
- * Carrega e valida os parâmetros de tela definidos no arquivo externo 'config.properties'.
+ * Carrega e valida os parâmetros de tela, controles, FPS e jogador a partir do arquivo externo 'config.properties'.
  * Garante integridade dos dados e evita execução com valores inválidos.
  */
 public class Config {
@@ -14,17 +17,31 @@ public class Config {
     // ================
     // Configurações base carregadas do arquivo
     // ================
-    public static int ORIGINAL_TILE_SIZE; // Tamanho base do tile, sem escala
-    public static int SCALE;              // Fator de escala aplicado ao tile
-    public static int MAX_SCREEN_COL;     // Número de colunas visíveis na tela
-    public static int MAX_SCREEN_ROW;     // Número de linhas visíveis na tela
+    public static int ORIGINAL_TILE_SIZE;
+    public static int SCALE;
+    public static int MAX_SCREEN_COL;
+    public static int MAX_SCREEN_ROW;
+    public static String WINDOW_TITLE;
 
     // ================
     // Configurações derivadas (calculadas com base nos valores acima)
     // ================
-    public static int TILE_SIZE;      // Tamanho final do tile (tile base x escala)
-    public static int SCREEN_WIDTH;   // Largura total da tela (em pixels)
-    public static int SCREEN_HEIGHT;  // Altura total da tela (em pixels)
+    public static int TILE_SIZE;
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
+
+    // ================
+    // Configurações do jogador e performance
+    // ================
+    public static int PLAYER_INITIAL_X;
+    public static int PLAYER_INITIAL_Y;
+    public static int PLAYER_SPEED;
+    public static int FPS;
+
+    // ================
+    // Mapeamento de teclas para ações do jogo
+    // ================
+    public static final Map<GameAction, Integer> KEY_BINDINGS = new EnumMap<>(GameAction.class);
 
     // Bloco estático executado ao carregar a classe
     static {
@@ -32,9 +49,8 @@ public class Config {
     }
 
     /**
-     * Carrega e valida as configurações do arquivo 'config.properties'.
-     * Também calcula os valores derivados com base nos parâmetros principais.
-     * Em caso de erro, exibe mensagem descritiva e encerra o programa.
+     * Carrega e valida todas as configurações do arquivo 'config.properties'.
+     * Em caso de erro, exibe uma mensagem e encerra a execução.
      */
     private static void load() {
         Properties props = new Properties();
@@ -42,16 +58,28 @@ public class Config {
         try (FileInputStream fis = new FileInputStream("config.properties")) {
             props.load(fis);
 
-            // Carregamento e validação dos parâmetros obrigatórios
+            // Parâmetros visuais
             ORIGINAL_TILE_SIZE = parsePositiveInt(props, "originalTileSize");
             SCALE = parsePositiveInt(props, "scale");
             MAX_SCREEN_COL = parsePositiveInt(props, "maxScreenCol");
             MAX_SCREEN_ROW = parsePositiveInt(props, "maxScreenRow");
+            WINDOW_TITLE = props.getProperty("windowTitle", "Jogo").trim();
 
-            // Cálculo das dimensões derivadas
+            // Cálculo de dimensões derivadas
             TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
             SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
             SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
+
+            // Configurações do jogador
+            PLAYER_INITIAL_X = parsePositiveInt(props, "playerInitialX");
+            PLAYER_INITIAL_Y = parsePositiveInt(props, "playerInitialY");
+            PLAYER_SPEED = parsePositiveInt(props, "playerSpeed");
+
+            // Configuração de FPS
+            FPS = parsePositiveInt(props, "fps");
+
+            // Mapeamento de teclas
+            loadKeyBindings(props);
 
         } catch (IOException e) {
             System.err.println("Erro ao carregar o arquivo 'config.properties'. Verifique se ele existe e está acessível.");
@@ -87,6 +115,44 @@ public class Config {
             return parsed;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("O valor de '" + key + "' deve ser um número inteiro válido.");
+        }
+    }
+
+    /**
+     * Carrega e associa teclas do config.properties a ações do enum GameAction.
+     */
+    private static void loadKeyBindings(Properties props) {
+        bindKey(props, GameAction.MOVE_UP, "key.moveUp");
+        bindKey(props, GameAction.MOVE_DOWN, "key.moveDown");
+        bindKey(props, GameAction.MOVE_LEFT, "key.moveLeft");
+        bindKey(props, GameAction.MOVE_RIGHT, "key.moveRight");
+    }
+
+    /**
+     * Associa uma tecla (configurada como string) a uma ação do jogo.
+     */
+    private static void bindKey(Properties props, GameAction action, String propertyKey) {
+        String keyName = props.getProperty(propertyKey);
+        if (keyName == null || keyName.isBlank()) {
+            throw new IllegalArgumentException("A tecla para a ação '" + action + "' não foi definida.");
+        }
+
+        int keyCode = parseKeyCode(keyName.trim().toUpperCase());
+        KEY_BINDINGS.put(action, keyCode);
+    }
+
+    /**
+     * Converte uma string de tecla para o código KeyEvent correspondente.
+     */
+    private static int parseKeyCode(String keyString) {
+        if (keyString.length() == 1) {
+            return KeyEvent.getExtendedKeyCodeForChar(keyString.charAt(0));
+        }
+
+        try {
+            return KeyEvent.class.getField("VK_" + keyString).getInt(null);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Tecla inválida: " + keyString);
         }
     }
 }
