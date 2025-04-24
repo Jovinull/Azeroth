@@ -30,26 +30,40 @@ public class Main {
         // Cria a janela principal da aplicação
         JFrame window = new JFrame();
 
-        // Define a operação padrão ao fechar a janela (encerra a aplicação)
+        // Define a operação padrão ao fechar a janela (encerra a aplicação completamente)
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Impede que o usuário redimensione a janela, garantindo layout consistente
+        // Impede que o usuário redimensione a janela, garantindo layout consistente e estático
         window.setResizable(false);
 
-        // Define o título da janela, útil para identificação da aplicação
+        // Define o título da janela exibido na barra superior
         window.setTitle("Azeroth");
 
-        // Cria e adiciona o painel de jogo à janela
+        // Cria o painel principal do jogo, responsável por renderização e lógica
         GamePanel gamePanel = new GamePanel();
+
+        // [COMENTÁRIO ADICIONAL]
+        // Associa o painel de jogo ao JFrame.
+        // Isso define a área da interface onde os gráficos e interações ocorrerão.
         window.add(gamePanel);
 
-        // Ajusta automaticamente o tamanho da janela de acordo com o conteúdo (preferência dos componentes)
+        // Ajusta o tamanho da janela automaticamente com base no conteúdo do painel
         window.pack();
 
-        // Centraliza a janela na tela, melhorando a experiência do usuário
+        // [COMENTÁRIO ADICIONAL]
+        // Essa chamada garante que a janela seja exibida centralizada na tela do monitor,
+        // melhorando a experiência de abertura inicial.
         window.setLocationRelativeTo(null);
 
-        // Torna a janela visível ao usuário
+        // Torna a janela visível (última etapa antes da execução do jogo)
         window.setVisible(true);
+
+        // Define o titulo do jogo
+        window.setTitle(Config.WINDOW_TITLE);
+
+        // [COMENTÁRIO ADICIONAL]
+        // Inicia a lógica de atualização e renderização contínua.
+        // Esse método inicia o loop principal de jogo em uma thread separada.
+        gamePanel.startGameThread();
     }
 }
