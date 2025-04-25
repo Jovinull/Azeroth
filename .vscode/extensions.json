@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "atommaterial.icons", // Ícones modernos para melhor navegação visual do projeto
+        "vscjava.vscode-java-debug", // Debugger nativo para Java puro (sem Maven/Gradle)
+        "vscjava.vscode-java-pack", // Pacote com suporte completo para Java no VS Code
+        "visualstudioexptteam.vscodeintellicode", // Sugestões de código baseadas em IA
+        "visualstudioexptteam.intellicode-api-usage-examples", // Sugestões baseadas em uso real de APIs
+        "redhat.java", // Language server completo da RedHat (essencial para Java puro)
+        "vscjava.vscode-java-dependency", // Exibição visual de dependências internas e arquivos
+        "editorconfig.editorconfig" // Suporte nativo a .editorconfig no VS Code
+    ]
+}
