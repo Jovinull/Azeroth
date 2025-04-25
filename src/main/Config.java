@@ -125,10 +125,31 @@ public class Config {
      * Carrega e associa teclas do config.properties a ações do enum GameAction.
      */
     private static void loadKeyBindings(Properties props) {
-        bindKey(props, GameAction.MOVE_UP, "key.moveUp");
-        bindKey(props, GameAction.MOVE_DOWN, "key.moveDown");
-        bindKey(props, GameAction.MOVE_LEFT, "key.moveLeft");
-        bindKey(props, GameAction.MOVE_RIGHT, "key.moveRight");
+        // Itera todas as propriedades procurando chaves com prefixo "key.move."
+        for (String propertyKey : props.stringPropertyNames()) {
+            if (propertyKey.startsWith("key.move.")) {
+                String direction = propertyKey.substring("key.move.".length()); // ex: "up"
+                GameAction action = mapDirectionToAction(direction);
+                if (action != null) {
+                    bindKey(props, action, propertyKey);
+                } else {
+                    System.err.println("Direção inválida em configuração de tecla: " + direction);
+                }
+            }
+        }
+    }
+
+    /**
+     * Converte uma string como "up" ou "left" em um GameAction correspondente.
+     */
+    private static GameAction mapDirectionToAction(String direction) {
+        return switch (direction.toLowerCase()) {
+            case "up" -> GameAction.MOVE_UP;
+            case "down" -> GameAction.MOVE_DOWN;
+            case "left" -> GameAction.MOVE_LEFT;
+            case "right" -> GameAction.MOVE_RIGHT;
+            default -> null;
+        };
     }
 
     /**
