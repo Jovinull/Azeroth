@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import utils.FpsMonitor;
+
 /**
  * GamePanel representa o componente gráfico principal onde o jogo é
  * renderizado.
@@ -16,28 +18,32 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements Runnable {
 
     // Manipulador de teclas, escutando eventos definidos via configuração
-    KeyHandler keyH = new KeyHandler();
+    private final KeyHandler keyH = new KeyHandler();
 
-    // Thread dedicada ao loop principal do jogo
-    Thread gameThread;
+    // Thread dedicada ao loop principal do jogo (uso de volatile para garantir
+    // visibilidade entre threads)
+    private volatile Thread gameThread;
 
     // ==========================
     // Estado do jogador
     // ==========================
 
     // Posição inicial do jogador
-    int playerX = Config.PLAYER_INITIAL_X;
-    int playerY = Config.PLAYER_INITIAL_Y;
+    private int playerX = Config.PLAYER_INITIAL_X;
+    private int playerY = Config.PLAYER_INITIAL_Y;
 
     // Velocidade de movimento do jogador
-    int playerSpeed = Config.PLAYER_SPEED;
+    private final int playerSpeed = Config.PLAYER_SPEED;
 
     // ==========================
     // Controle de FPS
     // ==========================
 
     // Frames por segundo desejados
-    int FPS = Config.FPS;
+    private final int FPS = Config.FPS;
+
+    // Monitoramento de FPS para debug (inicialmente desativado)
+    private final FpsMonitor fpsMonitor = new FpsMonitor(Config.ENABLE_FPS_MONITOR);
 
     /**
      * Construtor do painel do jogo.
@@ -80,6 +86,8 @@ public class GamePanel extends JPanel implements Runnable {
                 update(); // Atualiza o estado do jogo (ex: movimentação)
                 repaint(); // Redesenha os elementos na tela
                 delta--;
+
+                fpsMonitor.frameRendered(); // Registra que um frame foi renderizado (debug opcional)
             }
         }
     }
@@ -87,22 +95,26 @@ public class GamePanel extends JPanel implements Runnable {
     /**
      * Atualiza a posição do jogador com base nos estados das teclas.
      * Permite movimentação contínua enquanto a tecla estiver pressionada.
+     * Agora permite movimentações diagonais ao detectar múltiplas teclas
+     * pressionadas simultaneamente.
      */
     public void update() {
         if (keyH.upPressed) {
             playerY -= playerSpeed;
-        } else if (keyH.downPressed) {
+        }
+        if (keyH.downPressed) {
             playerY += playerSpeed;
-        } else if (keyH.leftPressed) {
+        }
+        if (keyH.leftPressed) {
             playerX -= playerSpeed;
-        } else if (keyH.rightPressed) {
+        }
+        if (keyH.rightPressed) {
             playerX += playerSpeed;
         }
     }
 
     /**
      * Responsável por desenhar os elementos gráficos do jogo na tela.
-     * No momento, desenha um retângulo representando o jogador.
      *
      * @param g Contexto gráfico fornecido pelo sistema Swing.
      */
@@ -112,12 +124,30 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Cor do jogador
-        g2.setColor(Color.WHITE);
-
-        // Desenha o jogador como um quadrado baseado no tileSize
-        g2.fillRect(playerX, playerY, Config.TILE_SIZE, Config.TILE_SIZE);
+        drawPlayer(g2); // Isola a responsabilidade de desenhar o jogador
 
         g2.dispose(); // Libera recursos gráficos
+    }
+
+    /**
+     * Método separado para desenhar o jogador.
+     * Essa separação melhora a organização do código e facilita futuras adições de
+     * novos elementos gráficos.
+     *
+     * @param g2 contexto gráfico 2D
+     */
+    private void drawPlayer(Graphics2D g2) {
+        g2.setColor(Color.WHITE);
+        g2.fillRect(playerX, playerY, Config.TILE_SIZE, Config.TILE_SIZE);
+    }
+
+    /**
+     * Permite ativar ou desativar o monitoramento de FPS dinamicamente.
+     * Útil para ambientes de desenvolvimento e depuração.
+     *
+     * @param enabled true para ativar a exibição de FPS, false para desativar
+     */
+    public void setFpsMonitorEnabled(boolean enabled) {
+        fpsMonitor.setEnabled(enabled);
     }
 }

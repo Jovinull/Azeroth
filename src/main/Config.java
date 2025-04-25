@@ -38,6 +38,7 @@ public class Config {
     public static int PLAYER_INITIAL_Y;
     public static int PLAYER_SPEED;
     public static int FPS;
+    public static boolean ENABLE_FPS_MONITOR;
 
     // ================
     // Mapeamento de teclas para ações do jogo
@@ -78,6 +79,7 @@ public class Config {
 
             // Configuração de FPS
             FPS = parsePositiveInt(props, "fps");
+            ENABLE_FPS_MONITOR = parseBoolean(props, "enableFpsMonitor");
 
             // Mapeamento de teclas
             loadKeyBindings(props);
@@ -90,6 +92,31 @@ public class Config {
         } catch (IllegalArgumentException e) {
             System.err.println("Erro de validação na configuração: " + e.getMessage());
             System.exit(1);
+        }
+    }
+
+    /**
+     * Lê e valida uma propriedade do tipo booleano (true/false).
+     *
+     * @param props Objeto Properties carregado do arquivo
+     * @param key   Nome da propriedade a ser validada
+     * @return Valor booleano da propriedade
+     * @throws IllegalArgumentException se a propriedade for ausente ou inválida
+     */
+    private static boolean parseBoolean(Properties props, String key) {
+        String value = props.getProperty(key);
+
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException("A propriedade obrigatória '" + key + "' está ausente.");
+        }
+
+        value = value.trim().toLowerCase();
+        if (value.equals("true")) {
+            return true;
+        } else if (value.equals("false")) {
+            return false;
+        } else {
+            throw new IllegalArgumentException("O valor de '" + key + "' deve ser 'true' ou 'false'.");
         }
     }
 
