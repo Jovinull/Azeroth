@@ -1,15 +1,16 @@
 package main;
 
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.EnumMap;
 import java.util.Map;
-import java.awt.event.KeyEvent;
+import java.util.Properties;
 
 /**
  * Classe de configuração dinâmica do jogo.
- * Carrega e valida os parâmetros de tela, controles, FPS e jogador a partir do arquivo externo 'config.properties'.
+ * Carrega e valida os parâmetros de tela, controles, FPS e jogador a partir do
+ * arquivo externo 'config.properties'.
  * Garante integridade dos dados e evita execução com valores inválidos.
  */
 public class Config {
@@ -82,7 +83,8 @@ public class Config {
             loadKeyBindings(props);
 
         } catch (IOException e) {
-            System.err.println("Erro ao carregar o arquivo 'config.properties'. Verifique se ele existe e está acessível.");
+            System.err.println(
+                    "Erro ao carregar o arquivo 'config.properties'. Verifique se ele existe e está acessível.");
             e.printStackTrace();
             System.exit(1);
         } catch (IllegalArgumentException e) {
@@ -94,10 +96,11 @@ public class Config {
     /**
      * Lê e valida uma propriedade obrigatória do tipo inteiro positivo.
      *
-     * @param props  Objeto Properties carregado do arquivo
-     * @param key    Nome da propriedade a ser validada
-     * @return       Valor inteiro positivo da propriedade
-     * @throws IllegalArgumentException se a propriedade for ausente, inválida ou <= 0
+     * @param props Objeto Properties carregado do arquivo
+     * @param key   Nome da propriedade a ser validada
+     * @return Valor inteiro positivo da propriedade
+     * @throws IllegalArgumentException se a propriedade for ausente, inválida ou <=
+     *                                  0
      */
     private static int parsePositiveInt(Properties props, String key) {
         String value = props.getProperty(key);

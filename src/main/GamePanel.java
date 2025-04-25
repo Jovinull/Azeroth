@@ -1,11 +1,17 @@
 package main;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JPanel;
 
 /**
- * GamePanel representa o componente gráfico principal onde o jogo é renderizado.
- * Contém o loop principal de atualização/desenho e manipula o estado do jogador com base nas entradas.
+ * GamePanel representa o componente gráfico principal onde o jogo é
+ * renderizado.
+ * Contém o loop principal de atualização/desenho e manipula o estado do jogador
+ * com base nas entradas.
  */
 public class GamePanel extends JPanel implements Runnable {
 
@@ -41,8 +47,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // Minimiza flickering na renderização
-        this.addKeyListener(keyH);    // Permite detectar entradas do jogador
-        this.setFocusable(true);      // Garante que o painel pode receber foco do teclado
+        this.addKeyListener(keyH); // Permite detectar entradas do jogador
+        this.setFocusable(true); // Garante que o painel pode receber foco do teclado
     }
 
     /**
@@ -55,9 +61,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     /**
      * Loop principal do jogo.
-     * Controla a taxa de atualização baseada no tempo e garante consistência de FPS.
+     * Controla a taxa de atualização baseada no tempo e garante consistência de
+     * FPS.
      */
-    @Override    
+    @Override
     public void run() {
         double drawInterval = 1000000000.0 / FPS; // nanosegundos por frame
         double delta = 0;
@@ -70,8 +77,8 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if (delta >= 1) {
-                update();     // Atualiza o estado do jogo (ex: movimentação)
-                repaint();    // Redesenha os elementos na tela
+                update(); // Atualiza o estado do jogo (ex: movimentação)
+                repaint(); // Redesenha os elementos na tela
                 delta--;
             }
         }

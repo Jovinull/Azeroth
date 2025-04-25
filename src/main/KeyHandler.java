@@ -6,8 +6,10 @@ import java.util.Map;
 
 /**
  * Classe responsável por lidar com eventos de teclado durante o jogo.
- * Utiliza o mapeamento de teclas definido na classe Config (via config.properties).
- * Atualiza o estado das ações (como movimentação) de acordo com as teclas pressionadas/liberadas.
+ * Utiliza o mapeamento de teclas definido na classe Config (via
+ * config.properties).
+ * Atualiza o estado das ações (como movimentação) de acordo com as teclas
+ * pressionadas/liberadas.
  */
 public class KeyHandler implements KeyListener {
 
@@ -25,7 +27,8 @@ public class KeyHandler implements KeyListener {
 
     /**
      * Chamado quando uma tecla é pressionada.
-     * Atualiza o estado das ações com base no código da tecla e no mapeamento de GameAction -> KeyCode.
+     * Atualiza o estado das ações com base no código da tecla e no mapeamento de
+     * GameAction -> KeyCode.
      *
      * @param e Evento de tecla pressionada.
      */
@@ -34,15 +37,20 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
         Map<GameAction, Integer> keys = Config.KEY_BINDINGS;
 
-        if (code == keys.get(GameAction.MOVE_UP))    upPressed = true;
-        if (code == keys.get(GameAction.MOVE_DOWN))  downPressed = true;
-        if (code == keys.get(GameAction.MOVE_LEFT))  leftPressed = true;
-        if (code == keys.get(GameAction.MOVE_RIGHT)) rightPressed = true;
+        if (code == keys.get(GameAction.MOVE_UP))
+            upPressed = true;
+        if (code == keys.get(GameAction.MOVE_DOWN))
+            downPressed = true;
+        if (code == keys.get(GameAction.MOVE_LEFT))
+            leftPressed = true;
+        if (code == keys.get(GameAction.MOVE_RIGHT))
+            rightPressed = true;
     }
 
     /**
      * Chamado quando uma tecla é liberada.
-     * Atualiza o estado das ações para falso, interrompendo o comportamento correspondente.
+     * Atualiza o estado das ações para falso, interrompendo o comportamento
+     * correspondente.
      *
      * @param e Evento de tecla liberada.
      */
@@ -51,9 +59,13 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
         Map<GameAction, Integer> keys = Config.KEY_BINDINGS;
 
-        if (code == keys.get(GameAction.MOVE_UP))    upPressed = false;
-        if (code == keys.get(GameAction.MOVE_DOWN))  downPressed = false;
-        if (code == keys.get(GameAction.MOVE_LEFT))  leftPressed = false;
-        if (code == keys.get(GameAction.MOVE_RIGHT)) rightPressed = false;
+        if (code == keys.get(GameAction.MOVE_UP))
+            upPressed = false;
+        if (code == keys.get(GameAction.MOVE_DOWN))
+            downPressed = false;
+        if (code == keys.get(GameAction.MOVE_LEFT))
+            leftPressed = false;
+        if (code == keys.get(GameAction.MOVE_RIGHT))
+            rightPressed = false;
     }
 }

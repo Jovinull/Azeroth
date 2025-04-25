@@ -1,6 +1,7 @@
 package main;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  * Classe principal responsável por iniciar a aplicação Swing.
@@ -30,10 +31,12 @@ public class Main {
         // Cria a janela principal da aplicação
         JFrame window = new JFrame();
 
-        // Define a operação padrão ao fechar a janela (encerra a aplicação completamente)
+        // Define a operação padrão ao fechar a janela (encerra a aplicação
+        // completamente)
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Impede que o usuário redimensione a janela, garantindo layout consistente e estático
+        // Impede que o usuário redimensione a janela, garantindo layout consistente e
+        // estático
         window.setResizable(false);
 
         // Define o título da janela exibido na barra superior
@@ -51,7 +54,8 @@ public class Main {
         window.pack();
 
         // [COMENTÁRIO ADICIONAL]
-        // Essa chamada garante que a janela seja exibida centralizada na tela do monitor,
+        // Essa chamada garante que a janela seja exibida centralizada na tela do
+        // monitor,
         // melhorando a experiência de abertura inicial.
         window.setLocationRelativeTo(null);
 
