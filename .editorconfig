@@ -1,0 +1,14 @@
+# Arquivo .editorconfig: padroniza a formatação entre editores e SOs
+# https://editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8              # Padrão de codificação universal
+end_of_line = lf             # Evita problemas entre Windows/Linux/Mac
+insert_final_newline = true # Garante linha em branco no final do arquivo
+trim_trailing_whitespace = true # Remove espaços desnecessários ao salvar
+
+indent_style = space         # Uso de espaços em vez de tabulação
+indent_size = 4              # Indentação padrão Java
+max_line_length = 120        # Padrão razoável para leitura de código

@@ -1,0 +1,30 @@
+{
+    // Habilita formatação automática ao salvar o arquivo
+    "editor.formatOnSave": true,
+    // Organiza imports apenas quando salvar explicitamente
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    // Limpeza de espaços e quebra de linha
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.autoSave": "onFocusChange",
+    // Configurações para arquivos Java
+    "[java]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.formatOnSave": true
+    },
+    // Define o JDK 24 local como ambiente padrão
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-24",
+            "path": "C:\\Program Files\\Java\\jdk-24",
+            "default": true
+        }
+    ],
+    // Usa o perfil embutido GoogleStyle (sem formatter.xml externo)
+    "java.format.settings.profile": "GoogleStyle",
+    // Habilita sugestões e auto complete
+    "java.completion.enabled": true
+}
