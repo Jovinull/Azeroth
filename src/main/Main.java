@@ -40,7 +40,7 @@ public class Main {
         window.setResizable(false);
 
         // Define o título da janela exibido na barra superior
-        window.setTitle("Azeroth");
+        window.setTitle(Config.WINDOW_TITLE);
 
         // Cria o painel principal do jogo, responsável por renderização e lógica
         GamePanel gamePanel = new GamePanel();
@@ -61,9 +61,6 @@ public class Main {
 
         // Torna a janela visível (última etapa antes da execução do jogo)
         window.setVisible(true);
-
-        // Define o titulo do jogo
-        window.setTitle(Config.WINDOW_TITLE);
 
         // [COMENTÁRIO ADICIONAL]
         // Inicia a lógica de atualização e renderização contínua.
