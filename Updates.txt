@@ -1,0 +1,2 @@
+- No futuro, se Entity for base para NPCs e inimigos, mover update() e draw() para Entity e aplicar polimorfismo em GamePanel será um bom passo.
+- Substituir os try catch, throw e PrintStackTrace por sistema de logs (ex: SLF4J) assim que o projeto escalar.
