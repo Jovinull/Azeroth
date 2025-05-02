@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import entity.Player;
 import utils.FpsMonitor;
 
 /**
@@ -24,16 +25,8 @@ public class GamePanel extends JPanel implements Runnable {
     // visibilidade entre threads)
     private volatile Thread gameThread;
 
-    // ==========================
-    // Estado do jogador
-    // ==========================
-
-    // Posição inicial do jogador
-    private int playerX = Config.PLAYER_INITIAL_X;
-    private int playerY = Config.PLAYER_INITIAL_Y;
-
-    // Velocidade de movimento do jogador
-    private final int playerSpeed = Config.PLAYER_SPEED;
+    // Instancia o jogador, passando o painel atual e o manipulador de teclas
+    Player player = new Player(this, keyH);
 
     // ==========================
     // Controle de FPS
@@ -93,24 +86,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * Atualiza a posição do jogador com base nos estados das teclas.
-     * Permite movimentação contínua enquanto a tecla estiver pressionada.
-     * Agora permite movimentações diagonais ao detectar múltiplas teclas
-     * pressionadas simultaneamente.
+     * Atualiza o estado do jogo.
+     * Neste momento, apenas o jogador é atualizado, mas futuros elementos (NPCs,
+     * inimigos etc.)
+     * também devem ser chamados aqui.
      */
     public void update() {
-        if (keyH.upPressed) {
-            playerY -= playerSpeed;
-        }
-        if (keyH.downPressed) {
-            playerY += playerSpeed;
-        }
-        if (keyH.leftPressed) {
-            playerX -= playerSpeed;
-        }
-        if (keyH.rightPressed) {
-            playerX += playerSpeed;
-        }
+        player.update();
     }
 
     /**
@@ -124,21 +106,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        drawPlayer(g2); // Isola a responsabilidade de desenhar o jogador
+        // Desenha o jogador na tela utilizando o contexto gráfico 2D
+        player.draw(g2);
 
         g2.dispose(); // Libera recursos gráficos
-    }
-
-    /**
-     * Método separado para desenhar o jogador.
-     * Essa separação melhora a organização do código e facilita futuras adições de
-     * novos elementos gráficos.
-     *
-     * @param g2 contexto gráfico 2D
-     */
-    private void drawPlayer(Graphics2D g2) {
-        g2.setColor(Color.WHITE);
-        g2.fillRect(playerX, playerY, Config.TILE_SIZE, Config.TILE_SIZE);
     }
 
     /**

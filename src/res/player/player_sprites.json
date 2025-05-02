@@ -1,0 +1,18 @@
+{
+    "up": [
+        "boy_up_1.png",
+        "boy_up_2.png"
+    ],
+    "down": [
+        "boy_down_1.png",
+        "boy_down_2.png"
+    ],
+    "left": [
+        "boy_left_1.png",
+        "boy_left_2.png"
+    ],
+    "right": [
+        "boy_right_1.png",
+        "boy_right_2.png"
+    ]
+}
