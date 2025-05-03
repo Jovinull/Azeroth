@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import tile.TileManager;
 import utils.FpsMonitor;
 
 /**
@@ -17,6 +18,8 @@ import utils.FpsMonitor;
  * com base nas entradas.
  */
 public class GamePanel extends JPanel implements Runnable {
+
+    TileManager tileManager = new TileManager(this); // Gerenciador responsável por carregar e desenhar o mapa
 
     // Manipulador de teclas, escutando eventos definidos via configuração
     private final KeyHandler keyH = new KeyHandler();
@@ -105,6 +108,8 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g); // limpa o painel antes de desenhar
 
         Graphics2D g2 = (Graphics2D) g;
+
+        tileManager.draw(g2); // Solicita ao TileManager que desenhe o mapa antes do jogador
 
         // Desenha o jogador na tela utilizando o contexto gráfico 2D
         player.draw(g2);

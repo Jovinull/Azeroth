@@ -1,0 +1,14 @@
+{
+    "0": {
+        "file": "grass.png",
+        "collision": false
+    },
+    "1": {
+        "file": "wall.png",
+        "collision": true
+    },
+    "2": {
+        "file": "water.png",
+        "collision": true
+    }
+}

@@ -1,2 +1,5 @@
 - No futuro, se Entity for base para NPCs e inimigos, mover update() e draw() para Entity e aplicar polimorfismo em GamePanel será um bom passo.
 - Substituir os try catch, throw e PrintStackTrace por sistema de logs (ex: SLF4J) assim que o projeto escalar.
+-  Refatorar getTileImage() para mapear dinamicamente tiles com índice e nome via arquivo .json, .csv ou .properties.
+- Validar estrutura do arquivo de mapa (ex: número de colunas por linha) para evitar ArrayIndexOutOfBoundsException.
+- Parametrizar o caminho do mapa no config.properties, com chave map.default.path e leitura em Config.java.

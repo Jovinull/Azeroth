@@ -41,6 +41,13 @@ public class Config {
     public static boolean ENABLE_FPS_MONITOR;
 
     // ================
+    // Caminhos de recursos
+    // ================
+    public static String TILE_CONFIG_PATH;
+    public static String TILE_IMAGE_BASE;
+    public static String MAP_DEFAULT_PATH;
+
+    // ================
     // Mapeamento de teclas para ações do jogo
     // ================
     public static final Map<GameAction, Integer> KEY_BINDINGS = new EnumMap<>(GameAction.class);
@@ -66,6 +73,11 @@ public class Config {
             MAX_SCREEN_COL = parsePositiveInt(props, "maxScreenCol");
             MAX_SCREEN_ROW = parsePositiveInt(props, "maxScreenRow");
             WINDOW_TITLE = props.getProperty("windowTitle", "Jogo").trim();
+
+            // Caminhos de recursos
+            TILE_CONFIG_PATH = props.getProperty("tile.config.path", "/res/tiles/tiles.json").trim();
+            TILE_IMAGE_BASE = props.getProperty("tile.image.base", "/res/tiles/").trim();
+            MAP_DEFAULT_PATH = props.getProperty("map.default.path", "/res/maps/map01.txt").trim();
 
             // Cálculo de dimensões derivadas
             TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
