@@ -29,7 +29,13 @@ public class GamePanel extends JPanel implements Runnable {
     private volatile Thread gameThread;
 
     // Instancia o jogador, passando o painel atual e o manipulador de teclas
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
+
+    // World Settings
+    public static final int MAX_WORLD_COL = 50;
+    public static final int MAX_WORLD_ROW = 50;
+    public final int worldWidth = Config.TILE_SIZE * MAX_WORLD_COL;
+    public final int worldHeight = Config.TILE_SIZE * MAX_WORLD_ROW;
 
     // ==========================
     // Controle de FPS

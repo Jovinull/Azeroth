@@ -34,7 +34,7 @@ public class TileManager {
     public TileManager(GamePanel gp) {
         this.gp = gp;
 
-        this.mapTileNum = new int[Config.MAX_SCREEN_COL][Config.MAX_SCREEN_ROW];
+        this.mapTileNum = new int[GamePanel.MAX_WORLD_COL][GamePanel.MAX_WORLD_ROW];
         this.tileMap = TileLoader.loadTiles(Config.TILE_CONFIG_PATH, Config.TILE_IMAGE_BASE);
         loadMap(Config.MAP_DEFAULT_PATH); // Carrega o layout do mapa
     }
@@ -59,10 +59,10 @@ public class TileManager {
 
             // Lê linha por linha até preencher toda a grade definida por MAX_SCREEN_COL e
             // MAX_SCREEN_ROW
-            while (col < Config.MAX_SCREEN_COL && row < Config.MAX_SCREEN_ROW) {
+            while (col < GamePanel.MAX_WORLD_COL && row < GamePanel.MAX_WORLD_ROW) {
                 String line = br.readLine(); // Lê uma linha do mapa
 
-                while (col < Config.MAX_SCREEN_COL) {
+                while (col < GamePanel.MAX_WORLD_COL) {
                     // Divide a linha em números (tiles) separados por espaço
                     String[] numbers = line.split(" ");
 
@@ -75,7 +75,7 @@ public class TileManager {
                 }
 
                 // Quando termina de ler uma linha inteira, passa para a próxima
-                if (col == Config.MAX_SCREEN_COL) {
+                if (col == GamePanel.MAX_WORLD_COL) {
                     col = 0;
                     row++;
                 }
@@ -101,29 +101,34 @@ public class TileManager {
      * @param g2 Contexto gráfico usado para desenhar as imagens dos tiles.
      */
     public void draw(Graphics2D g2) {
-        int col = 0;
-        int row = 0;
-        int x = 0;
-        int y = 0;
+        int worldCol = 0;
+        int worldRow = 0;
 
         // Itera por todas as colunas e linhas da matriz de mapa
-        while (col < Config.MAX_SCREEN_COL && row < Config.MAX_SCREEN_ROW) {
+        while (worldCol < GamePanel.MAX_WORLD_COL && worldRow < GamePanel.MAX_WORLD_ROW) {
 
-            int tileNum = mapTileNum[col][row]; // Obtém o tipo de tile naquela posição
+            int tileNum = mapTileNum[worldCol][worldRow]; // Obtém o tipo de tile naquela posição
+
+            int worldX = worldCol * Config.TILE_SIZE;
+            int worldY = worldRow * Config.TILE_SIZE;
+            int screenX = worldX - gp.player.worldX + gp.player.screenX;
+            int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
             // Desenha o tile na posição atual
-            BufferedImage img = tileMap.get(tileNum).image;
-            g2.drawImage(img, x, y, Config.TILE_SIZE, Config.TILE_SIZE, null);
+            if (worldX + Config.TILE_SIZE > gp.player.worldX - gp.player.screenX &&
+                    worldX - Config.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
+                    worldY + Config.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
+                    worldY - Config.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
+                BufferedImage img = tileMap.get(tileNum).image;
+                g2.drawImage(img, screenX, screenY, Config.TILE_SIZE, Config.TILE_SIZE, null);
+            }
 
-            col++;
-            x += Config.TILE_SIZE;
+            worldCol++;
 
             // Avança para a próxima linha da grade quando uma linha estiver completa
-            if (col == Config.MAX_SCREEN_COL) {
-                col = 0;
-                x = 0;
-                row++;
-                y += Config.TILE_SIZE;
+            if (worldCol == GamePanel.MAX_WORLD_COL) {
+                worldCol = 0;
+                worldRow++;
             }
         }
     }

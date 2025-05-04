@@ -7,7 +7,8 @@ import java.awt.image.BufferedImage;
  * Serve como superclasse para jogadores, NPCs, inimigos, etc.
  */
 public class Entity {
-    public int x, y; // Coordenadas da entidade na tela
+    public int worldX, worldY; // Coordenadas da entidade no mundo, usadas para cálculo de posição relativa ao
+                               // mapa
     public int speed; // Velocidade da entidade
 
     // Sprites da entidade para animação em cada direção

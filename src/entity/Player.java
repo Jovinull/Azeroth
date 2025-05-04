@@ -18,13 +18,8 @@ public class Player extends Entity {
     private GamePanel gp;
     private KeyHandler keyH;
 
-    // ==========================
-    // Estado do jogador
-    // ==========================
-
-    private int x; // Coordenada X atual do jogador
-    private int y; // Coordenada Y atual do jogador
-    private int speed; // Velocidade de movimento em pixels por atualização
+    public final int screenX;
+    public final int screenY;
 
     /**
      * Construtor do jogador.
@@ -35,6 +30,12 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+
+        // Posição fixa na tela onde o jogador será desenhado (centro da tela)
+        // A câmera é centralizada no jogador, movendo o mundo ao redor dele
+        screenX = Config.SCREEN_WIDTH / 2 - (Config.TILE_SIZE / 2);
+        screenY = Config.SCREEN_HEIGHT / 2 - (Config.TILE_SIZE / 2);
+
         setDefaultValues();
         getPlayerImage();
     }
@@ -43,8 +44,8 @@ public class Player extends Entity {
      * Define valores iniciais do jogador com base na configuração do jogo.
      */
     public void setDefaultValues() {
-        this.x = Config.PLAYER_INITIAL_X;
-        this.y = Config.PLAYER_INITIAL_Y;
+        this.worldX = Config.WORLD_INITIAL_X;
+        this.worldY = Config.WORLD_INITIAL_Y;
         this.speed = Config.PLAYER_SPEED;
         direction = Direction.DOWN;
     }
@@ -73,16 +74,16 @@ public class Player extends Entity {
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if (keyH.upPressed) {
                 direction = Direction.UP;
-                y -= speed;
+                worldY -= speed;
             } else if (keyH.downPressed) {
                 direction = Direction.DOWN;
-                y += speed;
+                worldY += speed;
             } else if (keyH.leftPressed) {
                 direction = Direction.LEFT;
-                x -= speed;
+                worldX -= speed;
             } else if (keyH.rightPressed) {
                 direction = Direction.RIGHT;
-                x += speed;
+                worldX += speed;
             }
 
             spriteCounter++;
@@ -128,6 +129,6 @@ public class Player extends Entity {
                 break;
         }
 
-        g2.drawImage(image, x, y, Config.TILE_SIZE, Config.TILE_SIZE, null);
+        g2.drawImage(image, screenX, screenY, Config.TILE_SIZE, Config.TILE_SIZE, null);
     }
 }

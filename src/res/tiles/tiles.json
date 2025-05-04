@@ -10,5 +10,17 @@
     "2": {
         "file": "water.png",
         "collision": true
+    },
+    "3": {
+        "file": "earth.png",
+        "collision": false
+    },
+    "4": {
+        "file": "tree.png",
+        "collision": true
+    },
+    "5": {
+        "file": "sand.png",
+        "collision": false
     }
 }

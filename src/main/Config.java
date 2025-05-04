@@ -34,8 +34,8 @@ public class Config {
     // ================
     // Configurações do jogador e performance
     // ================
-    public static int PLAYER_INITIAL_X;
-    public static int PLAYER_INITIAL_Y;
+    public static int WORLD_INITIAL_X;
+    public static int WORLD_INITIAL_Y;
     public static int PLAYER_SPEED;
     public static int FPS;
     public static boolean ENABLE_FPS_MONITOR;
@@ -84,9 +84,13 @@ public class Config {
             SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
             SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
 
-            // Configurações do jogador
-            PLAYER_INITIAL_X = parsePositiveInt(props, "playerInitialX");
-            PLAYER_INITIAL_Y = parsePositiveInt(props, "playerInitialY");
+            // Calcula posição inicial do jogador no mundo com base na posição em tiles
+            // Isso garante acoplamento com a lógica de mapa/scroll
+            int initialWorldTileX = parsePositiveInt(props, "worldInitialX");
+            int initialWorldTileY = parsePositiveInt(props, "worldInitialY");
+            WORLD_INITIAL_X = initialWorldTileX * TILE_SIZE;
+            WORLD_INITIAL_Y = initialWorldTileY * TILE_SIZE;
+
             PLAYER_SPEED = parsePositiveInt(props, "playerSpeed");
 
             // Configuração de FPS
