@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import entity.Player;
 import tile.TileManager;
+import utils.CollisionChecker;
 import utils.FpsMonitor;
 
 /**
@@ -19,7 +20,7 @@ import utils.FpsMonitor;
  */
 public class GamePanel extends JPanel implements Runnable {
 
-    TileManager tileManager = new TileManager(this); // Gerenciador responsável por carregar e desenhar o mapa
+    private TileManager tileManager = new TileManager(this); // Gerenciador responsável por carregar e desenhar o mapa
 
     // Manipulador de teclas, escutando eventos definidos via configuração
     private final KeyHandler keyH = new KeyHandler();
@@ -27,6 +28,8 @@ public class GamePanel extends JPanel implements Runnable {
     // Thread dedicada ao loop principal do jogo (uso de volatile para garantir
     // visibilidade entre threads)
     private volatile Thread gameThread;
+
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
 
     // Instancia o jogador, passando o painel atual e o manipulador de teclas
     public Player player = new Player(this, keyH);
@@ -131,5 +134,14 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void setFpsMonitorEnabled(boolean enabled) {
         fpsMonitor.setEnabled(enabled);
+    }
+
+    /**
+     * Fornece acesso controlado ao gerenciador de tiles.
+     *
+     * @return instância de TileManager
+     */
+    public TileManager getTileManager() {
+        return tileManager;
     }
 }

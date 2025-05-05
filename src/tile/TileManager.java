@@ -21,8 +21,8 @@ public class TileManager {
     GamePanel gp; // Referência ao painel principal do jogo, necessária para acesso às dimensões e
                   // contexto
 
-    Map<Integer, Tile> tileMap; // Vetor de tipos de tiles possíveis (grama, parede, água, etc.)
-    int mapTileNum[][]; // Mapa bidimensional indicando qual tile está presente em cada posição
+    private Map<Integer, Tile> tileMap; // Vetor de tipos de tiles possíveis (grama, parede, água, etc.)
+    private int[][] mapTileNum; // Mapa bidimensional indicando qual tile está presente em cada posição
 
     /**
      * Construtor do gerenciador de tiles.
@@ -131,5 +131,27 @@ public class TileManager {
                 worldRow++;
             }
         }
+    }
+
+    /**
+     * Retorna o número do tile na posição especificada.
+     *
+     * @param col coluna no mapa
+     * @param row linha no mapa
+     * @return índice do tile
+     */
+    public int getTileNumber(int col, int row) {
+        return mapTileNum[col][row];
+    }
+
+    /**
+     * Verifica se o tile especificado possui colisão.
+     *
+     * @param tileNum índice do tile
+     * @return true se tiver colisão, false caso contrário
+     */
+    public boolean hasCollision(int tileNum) {
+        Tile tile = tileMap.get(tileNum);
+        return tile != null && tile.collision;
     }
 }

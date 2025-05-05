@@ -39,6 +39,7 @@ public class Config {
     public static int PLAYER_SPEED;
     public static int FPS;
     public static boolean ENABLE_FPS_MONITOR;
+    public static int COLLISION_BOX_OFFSET;
 
     // ================
     // Caminhos de recursos
@@ -90,6 +91,7 @@ public class Config {
             int initialWorldTileY = parsePositiveInt(props, "worldInitialY");
             WORLD_INITIAL_X = initialWorldTileX * TILE_SIZE;
             WORLD_INITIAL_Y = initialWorldTileY * TILE_SIZE;
+            COLLISION_BOX_OFFSET = parsePositiveInt(props, "collisionBoxOffset");
 
             PLAYER_SPEED = parsePositiveInt(props, "playerSpeed");
 

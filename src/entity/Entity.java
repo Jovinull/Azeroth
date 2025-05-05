@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -21,4 +22,7 @@ public class Entity {
 
     public int spriteCounter = 0; // Contador usado para alternar os sprites
     public int spriteNumber = 1; // Alternância entre sprite 1 e 2
+
+    public Rectangle solidArea;
+    public boolean collisionOn = false;
 }

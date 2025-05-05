@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
@@ -35,6 +36,22 @@ public class Player extends Entity {
         // A câmera é centralizada no jogador, movendo o mundo ao redor dele
         screenX = Config.SCREEN_WIDTH / 2 - (Config.TILE_SIZE / 2);
         screenY = Config.SCREEN_HEIGHT / 2 - (Config.TILE_SIZE / 2);
+
+        // ======================================================================
+        // Inicializa a área sólida (hitbox) da entidade, usada para detecção de
+        // colisão.
+        // Por padrão, a hitbox é centralizada e menor que o tile para suavizar a
+        // movimentação.
+        //
+        // O valor de "offset" é configurável via 'config.properties' e reduz as bordas
+        // da área
+        // de colisão em relação ao tamanho total do tile, evitando colisões injustas.
+        // ======================================================================
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = Config.TILE_SIZE - Config.COLLISION_BOX_OFFSET;
+        solidArea.height = Config.TILE_SIZE - Config.COLLISION_BOX_OFFSET;
 
         setDefaultValues();
         getPlayerImage();
@@ -74,16 +91,34 @@ public class Player extends Entity {
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if (keyH.upPressed) {
                 direction = Direction.UP;
-                worldY -= speed;
             } else if (keyH.downPressed) {
                 direction = Direction.DOWN;
-                worldY += speed;
             } else if (keyH.leftPressed) {
                 direction = Direction.LEFT;
-                worldX -= speed;
             } else if (keyH.rightPressed) {
                 direction = Direction.RIGHT;
-                worldX += speed;
+            }
+
+            // Check Tile Collision
+            collisionOn = false;
+            gp.collisionChecker.checkTile(this);
+
+            // IF Collision is false, playercan move
+            if (collisionOn == false) {
+                switch (direction) {
+                    case UP:
+                        worldY -= speed;
+                        break;
+                    case DOWN:
+                        worldY += speed;
+                        break;
+                    case LEFT:
+                        worldX -= speed;
+                        break;
+                    case RIGHT:
+                        worldX += speed;
+                        break;
+                }
             }
 
             spriteCounter++;

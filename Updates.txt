@@ -3,3 +3,6 @@
 -  Refatorar getTileImage() para mapear dinamicamente tiles com índice e nome via arquivo .json, .csv ou .properties.
 - Validar estrutura do arquivo de mapa (ex: número de colunas por linha) para evitar ArrayIndexOutOfBoundsException.
 - Parametrizar o caminho do mapa no config.properties, com chave map.default.path e leitura em Config.java.
+- Explicar melhor com comentários o Draw de TileManager (14 minutos da Aula 5)
+- Faz sentido em Entity ter o valor padrão e no tiles.json ter o valor de cada um? é redudante?
+- Explicar os calculos da aula 6 nos 14 minutos sobre colisão na qual CollisionChecker.
