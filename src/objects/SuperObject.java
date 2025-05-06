@@ -1,6 +1,7 @@
 package objects;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import main.Config;
@@ -12,6 +13,19 @@ public class SuperObject {
     public String name; // Nome identificador do objeto (ex: "Key", "Door", etc.)
     public boolean collision = false; // Indica se o objeto bloqueia movimento do jogador
     public int worldX, worldY; // Posição do objeto no mundo (em pixels)
+    /**
+     * Área sólida usada para colisão com o jogador ou outros objetos.
+     * Os valores padrão definem uma hitbox quadrada centralizada no tile.
+     * Dimensões e offsets podem ser ajustadas por objeto, conforme necessidade.
+     */
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+
+    /**
+     * Posição padrão (offset) da hitbox para restaurar estado após modificações
+     * temporárias.
+     */
+    public int solidAreaDefaultX = 0;
+    public int solidAreaDefaultY = 0;
 
     /**
      * Renderiza o objeto na tela, considerando o deslocamento da câmera em relação

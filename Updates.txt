@@ -6,3 +6,9 @@
 - Explicar melhor com comentários o Draw de TileManager (14 minutos da Aula 5)
 - Faz sentido em Entity ter o valor padrão e no tiles.json ter o valor de cada um? é redudante?
 - Explicar os calculos da aula 6 nos 14 minutos sobre colisão na qual CollisionChecker.
+- Evitar uso direto de System.out.println em produção:
+- Criar um método de log utilitário ou utilizar Logger, com opção de ativar via config (enableDebugMode).
+- Evitar acoplamento com strings literais como "Key" e "Door":
+- Criar um enum GameObjectType (ex: KEY, DOOR) e definir isso nas classes dos objetos.
+- Substituir gp.obj[i] = null por um método removeObjectAt(int index) para encapsular lógica e evitar erros futuros.
+- Evitar uso de valores mágicos e definir constantes com nomes claros para facilitar manutenção e leitura. Casos identificados: solidArea.x = 8, solidArea.y = 16, Config.TILE_SIZE - Config.COLLISION_BOX_OFFSET (offset ainda não definido), e if (i != 999) na checagem de colisão com objeto.

@@ -21,6 +21,8 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+    // Contador de chaves que o jogador possui. Utilizado para abrir portas no mapa.
+    int hasKey = 0;
 
     /**
      * Construtor do jogador.
@@ -50,6 +52,11 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
+        // Armazena os valores originais da hitbox para permitir reset pós-colisão.
+        // Isso evita o deslocamento permanente da área sólida caso seja modificada
+        // dinamicamente.
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         solidArea.width = Config.TILE_SIZE - Config.COLLISION_BOX_OFFSET;
         solidArea.height = Config.TILE_SIZE - Config.COLLISION_BOX_OFFSET;
 
@@ -103,6 +110,10 @@ public class Player extends Entity {
             collisionOn = false;
             gp.collisionChecker.checkTile(this);
 
+            // Verifica colisão com objetos interativos (como chaves e portas).
+            int objIndex = gp.collisionChecker.checkObject(this, true);
+            pickUpObject(objIndex);
+
             // IF Collision is false, playercan move
             if (collisionOn == false) {
                 switch (direction) {
@@ -126,6 +137,34 @@ public class Player extends Entity {
             if (spriteCounter > 10) {
                 spriteNumber = (spriteNumber == 1) ? 2 : 1;
                 spriteCounter = 0;
+            }
+        }
+    }
+
+    /**
+     * Trata a interação do jogador com objetos do mapa, como chaves e portas.
+     * A lógica é baseada no nome do objeto.
+     *
+     * @param i Índice do objeto colidido no array de objetos do mapa.
+     */
+    public void pickUpObject(int i) {
+        if (i != 999) {
+            String objectName = gp.obj[i].name;
+
+            switch (objectName) {
+                case "Key":
+                    hasKey++;
+                    gp.obj[i] = null;
+                    System.out.println("Key: " + hasKey); // ✅ Temporário para debug
+                    break;
+
+                case "Door":
+                    if (hasKey > 0) {
+                        gp.obj[i] = null;
+                        hasKey--;
+                    }
+                    System.out.println("Key: " + hasKey); // ✅ Temporário para debug
+                    break;
             }
         }
     }

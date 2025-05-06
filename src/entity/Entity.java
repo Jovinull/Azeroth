@@ -23,6 +23,24 @@ public class Entity {
     public int spriteCounter = 0; // Contador usado para alternar os sprites
     public int spriteNumber = 1; // Alternância entre sprite 1 e 2
 
+    /**
+     * Posição padrão (offset) da área sólida da entidade em relação à sua posição
+     * (worldX, worldY).
+     * Usado para resetar a área de colisão ao estado original após alterações
+     * temporárias.
+     */
+    public int solidAreaDefaultX, solidAreaDefaultY;
     public Rectangle solidArea;
     public boolean collisionOn = false;
+
+    /**
+     * Restaura a posição da área sólida (hitbox) da entidade para os valores
+     * padrão.
+     * Deve ser chamado após simulações de movimento para evitar acúmulo de
+     * deslocamentos.
+     */
+    public void resetSolidArea() {
+        this.solidArea.x = this.solidAreaDefaultX;
+        this.solidArea.y = this.solidAreaDefaultY;
+    }
 }
