@@ -8,7 +8,9 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import objects.SuperObject;
 import tile.TileManager;
+import utils.AssetSetter;
 import utils.CollisionChecker;
 import utils.FpsMonitor;
 
@@ -31,8 +33,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     public CollisionChecker collisionChecker = new CollisionChecker(this);
 
+    public AssetSetter aSetter = new AssetSetter(this);
+
     // Instancia o jogador, passando o painel atual e o manipulador de teclas
     public Player player = new Player(this, keyH);
+
+    // Array que armazena todos os objetos ativos no mapa.
+    public SuperObject obj[] = new SuperObject[10];
 
     // World Settings
     public static final int MAX_WORLD_COL = 50;
@@ -60,6 +67,16 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true); // Minimiza flickering na renderização
         this.addKeyListener(keyH); // Permite detectar entradas do jogador
         this.setFocusable(true); // Garante que o painel pode receber foco do teclado
+    }
+
+    /**
+     * Método responsável pela configuração inicial do jogo.
+     * Neste estágio, realiza o posicionamento dos objetos no mapa por meio do
+     * AssetSetter.
+     * Ideal para futuras expansões como carregamento de NPCs, inimigos ou itens.
+     */
+    public void setupGame() {
+        aSetter.setObject(); // Posiciona os objetos no mundo com base em posições predefinidas
     }
 
     /**
@@ -108,9 +125,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * Responsável por desenhar os elementos gráficos do jogo na tela.
+     * Método responsável por desenhar todos os elementos gráficos da tela.
+     * Executa a renderização na ordem correta: mapa (tiles), objetos, jogador.
      *
-     * @param g Contexto gráfico fornecido pelo sistema Swing.
+     * @param g Contexto gráfico fornecido pelo Swing.
      */
     @Override
     public void paintComponent(Graphics g) {
@@ -118,8 +136,18 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        // TILE
         tileManager.draw(g2); // Solicita ao TileManager que desenhe o mapa antes do jogador
 
+        // OBJECT
+        // Percorre o array de objetos e desenha apenas os não-nulos
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(g2, this);
+            }
+        }
+
+        // PLAYER
         // Desenha o jogador na tela utilizando o contexto gráfico 2D
         player.draw(g2);
 

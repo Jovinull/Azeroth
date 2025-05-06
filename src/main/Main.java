@@ -45,7 +45,6 @@ public class Main {
         // Cria o painel principal do jogo, responsável por renderização e lógica
         GamePanel gamePanel = new GamePanel();
 
-        // [COMENTÁRIO ADICIONAL]
         // Associa o painel de jogo ao JFrame.
         // Isso define a área da interface onde os gráficos e interações ocorrerão.
         window.add(gamePanel);
@@ -53,7 +52,6 @@ public class Main {
         // Ajusta o tamanho da janela automaticamente com base no conteúdo do painel
         window.pack();
 
-        // [COMENTÁRIO ADICIONAL]
         // Essa chamada garante que a janela seja exibida centralizada na tela do
         // monitor,
         // melhorando a experiência de abertura inicial.
@@ -62,7 +60,8 @@ public class Main {
         // Torna a janela visível (última etapa antes da execução do jogo)
         window.setVisible(true);
 
-        // [COMENTÁRIO ADICIONAL]
+        gamePanel.setupGame();
+
         // Inicia a lógica de atualização e renderização contínua.
         // Esse método inicia o loop principal de jogo em uma thread separada.
         gamePanel.startGameThread();
