@@ -1,6 +1,5 @@
 package utils;
 
-import entity.Direction;
 import entity.Entity;
 import main.Config;
 import main.GamePanel;

@@ -1,4 +1,4 @@
-package entity;
+package utils;
 
 /**
  * Direções válidas para movimentação de entidades.

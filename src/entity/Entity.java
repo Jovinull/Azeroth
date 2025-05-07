@@ -3,6 +3,8 @@ package entity;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import utils.Direction;
+
 /**
  * Classe base para todas as entidades do jogo que possuem sprite e direção.
  * Serve como superclasse para jogadores, NPCs, inimigos, etc.

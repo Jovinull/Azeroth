@@ -8,6 +8,7 @@ import java.util.Map;
 import main.Config;
 import main.GamePanel;
 import main.KeyHandler;
+import utils.Direction;
 import utils.SoundType;
 import utils.SpriteLoader;
 
