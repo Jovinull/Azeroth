@@ -224,4 +224,22 @@ public class Config {
             throw new IllegalArgumentException("Tecla inválida: " + keyString);
         }
     }
+
+    /**
+     * Retorna uma propriedade arbitrária do arquivo config.
+     * Útil para buscar sons e recursos opcionais.
+     *
+     * @param key chave da propriedade
+     * @return valor da propriedade ou null se não encontrada
+     */
+    public static String getProperty(String key) {
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            Properties props = new Properties();
+            props.load(fis);
+            return props.getProperty(key);
+        } catch (IOException e) {
+            System.err.println("Erro ao acessar propriedade: " + key);
+            return null;
+        }
+    }
 }

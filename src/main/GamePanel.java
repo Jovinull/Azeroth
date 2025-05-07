@@ -13,6 +13,7 @@ import tile.TileManager;
 import utils.AssetSetter;
 import utils.CollisionChecker;
 import utils.FpsMonitor;
+import utils.SoundType;
 
 /**
  * GamePanel representa o componente gráfico principal onde o jogo é
@@ -27,11 +28,9 @@ public class GamePanel extends JPanel implements Runnable {
     // Manipulador de teclas, escutando eventos definidos via configuração
     private final KeyHandler keyH = new KeyHandler();
 
-    // Thread dedicada ao loop principal do jogo (uso de volatile para garantir
-    // visibilidade entre threads)
-    private volatile Thread gameThread;
-
     public CollisionChecker collisionChecker = new CollisionChecker(this);
+
+    Sound sound = new Sound();
 
     public AssetSetter aSetter = new AssetSetter(this);
 
@@ -44,8 +43,10 @@ public class GamePanel extends JPanel implements Runnable {
     // World Settings
     public static final int MAX_WORLD_COL = 50;
     public static final int MAX_WORLD_ROW = 50;
-    public final int worldWidth = Config.TILE_SIZE * MAX_WORLD_COL;
-    public final int worldHeight = Config.TILE_SIZE * MAX_WORLD_ROW;
+
+    // Thread dedicada ao loop principal do jogo (uso de volatile para garantir
+    // visibilidade entre threads)
+    private volatile Thread gameThread;
 
     // ==========================
     // Controle de FPS
@@ -77,6 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void setupGame() {
         aSetter.setObject(); // Posiciona os objetos no mundo com base em posições predefinidas
+        playMusic(SoundType.BLUEBOY_THEME);
     }
 
     /**
@@ -171,5 +173,34 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public TileManager getTileManager() {
         return tileManager;
+    }
+
+    /**
+     * Reproduz uma música de fundo definida pelo tipo {@link SoundType}.
+     * A música é configurada para loop contínuo.
+     *
+     * @param type Tipo de música a ser reproduzida
+     */
+    public void playMusic(SoundType type) {
+        sound.setFile(type);
+        sound.play();
+        sound.loop();
+    }
+
+    /**
+     * Para a reprodução da música atual.
+     */
+    public void stopMusic() {
+        sound.stop();
+    }
+
+    /**
+     * Reproduz um efeito sonoro (Sound Effect) uma única vez.
+     *
+     * @param type Tipo de efeito sonoro a ser reproduzido
+     */
+    public void playSE(SoundType type) {
+        sound.setFile(type);
+        sound.play();
     }
 }

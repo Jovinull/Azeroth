@@ -8,6 +8,7 @@ import java.util.Map;
 import main.Config;
 import main.GamePanel;
 import main.KeyHandler;
+import utils.SoundType;
 import utils.SpriteLoader;
 
 /**
@@ -153,6 +154,7 @@ public class Player extends Entity {
 
             switch (objectName) {
                 case "Key":
+                    gp.playSE(SoundType.COIN); // Som de coletar chave
                     hasKey++;
                     gp.obj[i] = null;
                     System.out.println("Key: " + hasKey); // ✅ Temporário para debug
@@ -160,10 +162,17 @@ public class Player extends Entity {
 
                 case "Door":
                     if (hasKey > 0) {
+                        gp.playSE(SoundType.UNLOCK); // Som de destrancar porta
                         gp.obj[i] = null;
                         hasKey--;
                     }
                     System.out.println("Key: " + hasKey); // ✅ Temporário para debug
+                    break;
+
+                case "Boots":
+                    gp.playSE(SoundType.POWER_UP); // Som de coletar item de velocidade
+                    speed += 1;
+                    gp.obj[i] = null;
                     break;
             }
         }
