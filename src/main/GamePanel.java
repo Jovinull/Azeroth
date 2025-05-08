@@ -28,16 +28,12 @@ public class GamePanel extends JPanel implements Runnable {
     // Manipulador de teclas, escutando eventos definidos via configuração
     private final KeyHandler keyH = new KeyHandler();
 
-    public GameState gameState = new GameState();
-
     public CollisionChecker collisionChecker = new CollisionChecker(this);
 
     Sound music = new Sound();
     Sound se = new Sound();
 
     public AssetSetter aSetter = new AssetSetter(this);
-
-    public UI ui = new UI(this);
 
     // Instancia o jogador, passando o painel atual e o manipulador de teclas
     public Player player = new Player(this, keyH);
@@ -87,33 +83,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * Inicia a thread principal do jogo, caso ela ainda não esteja em execução.
-     * Garante que múltiplas instâncias não sejam criadas simultaneamente.
+     * Inicia a execução da thread de jogo com base no método run().
      */
     public void startGameThread() {
-        if (gameThread == null || !gameThread.isAlive()) {
-            gameThread = new Thread(this); // 'this' deve implementar Runnable
-            gameThread.start();
-        }
-    }
-
-    /**
-     * Interrompe a thread principal do jogo de forma controlada.
-     * Utiliza o método interrupt() como sinalização de parada.
-     */
-    public void stopGameThread() {
-        if (gameThread != null && gameThread.isAlive()) {
-            gameThread.interrupt(); // Sugere-se que o loop principal respeite esse sinal
-        }
-    }
-
-    /**
-     * Verifica se a thread principal do jogo está ativa e em execução.
-     *
-     * @return true se a thread estiver viva; false caso contrário
-     */
-    public boolean isGameRunning() {
-        return gameThread != null && gameThread.isAlive();
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
     /**
@@ -179,9 +153,6 @@ public class GamePanel extends JPanel implements Runnable {
         // PLAYER
         // Desenha o jogador na tela utilizando o contexto gráfico 2D
         player.draw(g2);
-
-        // UI
-        ui.draw(g2);
 
         g2.dispose(); // Libera recursos gráficos
     }

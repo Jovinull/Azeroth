@@ -49,14 +49,6 @@ public class Config {
     public static String MAP_DEFAULT_PATH;
 
     // ================
-    // Configurações de UI
-    // ================
-    public static int UI_KEY_TEXT_X;
-    public static int UI_KEY_TEXT_Y;
-    public static int UI_MESSAGE_FONT_SIZE;
-    public static int UI_MESSAGE_DURATION_FRAMES;
-
-    // ================
     // Mapeamento de teclas para ações do jogo
     // ================
     public static final Map<GameAction, Integer> KEY_BINDINGS = new EnumMap<>(GameAction.class);
