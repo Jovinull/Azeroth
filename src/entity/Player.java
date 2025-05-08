@@ -23,8 +23,9 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+
     // Contador de chaves que o jogador possui. Utilizado para abrir portas no mapa.
-    int hasKey = 0;
+    public int hasKey = 0;
 
     /**
      * Construtor do jogador.
@@ -158,7 +159,7 @@ public class Player extends Entity {
                     gp.playSE(SoundType.COIN); // Som de coletar chave
                     hasKey++;
                     gp.obj[i] = null;
-                    System.out.println("Key: " + hasKey); // ✅ Temporário para debug
+                    gp.ui.showMessage("Você obteve uma chave");
                     break;
 
                 case "Door":
@@ -166,14 +167,22 @@ public class Player extends Entity {
                         gp.playSE(SoundType.UNLOCK); // Som de destrancar porta
                         gp.obj[i] = null;
                         hasKey--;
+                        gp.ui.showMessage("Você abriu uma porta");
+                    } else {
+                        gp.ui.showMessage("Você precisa de uma chave");
                     }
-                    System.out.println("Key: " + hasKey); // ✅ Temporário para debug
                     break;
 
                 case "Boots":
                     gp.playSE(SoundType.POWER_UP); // Som de coletar item de velocidade
                     speed += 1;
                     gp.obj[i] = null;
+                    gp.ui.showMessage("Aumento de velocidade");
+                    break;
+                case "Chest":
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
+                    gp.playSE(SoundType.FANFARE);
                     break;
             }
         }
