@@ -30,7 +30,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public CollisionChecker collisionChecker = new CollisionChecker(this);
 
-    Sound sound = new Sound();
+    Sound music = new Sound();
+    Sound se = new Sound();
 
     public AssetSetter aSetter = new AssetSetter(this);
 
@@ -182,16 +183,16 @@ public class GamePanel extends JPanel implements Runnable {
      * @param type Tipo de música a ser reproduzida
      */
     public void playMusic(SoundType type) {
-        sound.setFile(type);
-        sound.play();
-        sound.loop();
+        music.setFile(type);
+        music.play();
+        music.loop();
     }
 
     /**
      * Para a reprodução da música atual.
      */
     public void stopMusic() {
-        sound.stop();
+        music.stop();
     }
 
     /**
@@ -200,7 +201,7 @@ public class GamePanel extends JPanel implements Runnable {
      * @param type Tipo de efeito sonoro a ser reproduzido
      */
     public void playSE(SoundType type) {
-        sound.setFile(type);
-        sound.play();
+        se.setFile(type);
+        se.play();
     }
 }
