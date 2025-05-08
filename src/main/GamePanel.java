@@ -21,7 +21,7 @@ import utils.SoundType;
  * Contém o loop principal de atualização/desenho e manipula o estado do jogador
  * com base nas entradas.
  */
-public class GamePanel extends JPanel implements Runnable, GameLoopController {
+public class GamePanel extends JPanel implements Runnable {
 
     private TileManager tileManager = new TileManager(this); // Gerenciador responsável por carregar e desenhar o mapa
 
