@@ -49,6 +49,11 @@ public class Config {
     public static String MAP_DEFAULT_PATH;
 
     // ================
+    // UI
+    // ================
+    public static int UI_MESSAGE_DISPLAY_FRAMES;
+
+    // ================
     // Mapeamento de teclas para ações do jogo
     // ================
     public static final Map<GameAction, Integer> KEY_BINDINGS = new EnumMap<>(GameAction.class);
@@ -84,6 +89,9 @@ public class Config {
             TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
             SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
             SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
+
+            // Tempo de duração para exibir mensagem
+            UI_MESSAGE_DISPLAY_FRAMES = parsePositiveInt(props, "ui.message.display.frames");
 
             // Calcula posição inicial do jogador no mundo com base na posição em tiles
             // Isso garante acoplamento com a lógica de mapa/scroll

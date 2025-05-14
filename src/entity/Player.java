@@ -23,8 +23,11 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    // Contador de chaves que o jogador possui. Utilizado para abrir portas no mapa.
-    public int hasKey = 0;
+    /**
+     * Quantidade de chaves que o jogador possui atualmente.
+     * Utilizado na interação com portas e exibição na HUD.
+     */
+    private int hasKey = 0;
 
     /**
      * Construtor do jogador.
@@ -155,17 +158,16 @@ public class Player extends Entity {
 
             switch (objectName) {
                 case "Key":
-                    gp.playSE(SoundType.COIN); // Som de coletar chave
-                    hasKey++;
+                    gp.playSE(SoundType.COIN);
+                    addKey(1);
                     gp.obj[i] = null;
                     gp.ui.showMessage("Você pegou a chave!");
                     break;
 
                 case "Door":
-                    if (hasKey > 0) {
-                        gp.playSE(SoundType.UNLOCK); // Som de destrancar porta
+                    if (consumeKey()) {
+                        gp.playSE(SoundType.UNLOCK);
                         gp.obj[i] = null;
-                        hasKey--;
                         gp.ui.showMessage("Você abriu a porta!");
                     } else {
                         gp.ui.showMessage("Você precisa de uma chave!");
@@ -173,7 +175,7 @@ public class Player extends Entity {
                     break;
 
                 case "Boots":
-                    gp.playSE(SoundType.POWER_UP); // Som de coletar item de velocidade
+                    gp.playSE(SoundType.POWER_UP);
                     speed += 1;
                     gp.obj[i] = null;
                     gp.ui.showMessage("Velocidade aumentada!");
@@ -223,5 +225,38 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, screenX, screenY, Config.TILE_SIZE, Config.TILE_SIZE, null);
+    }
+
+    /**
+     * Retorna a quantidade de chaves que o jogador possui.
+     *
+     * @return número de chaves
+     */
+    public int getHasKey() {
+        return hasKey;
+    }
+
+    /**
+     * Adiciona uma ou mais chaves ao inventário do jogador.
+     *
+     * @param quantidade número de chaves a adicionar
+     */
+    public void addKey(int quantidade) {
+        if (quantidade > 0) {
+            hasKey += quantidade;
+        }
+    }
+
+    /**
+     * Consome uma chave do inventário do jogador, se houver.
+     *
+     * @return true se a chave foi consumida com sucesso, false se não havia chave
+     */
+    public boolean consumeKey() {
+        if (hasKey > 0) {
+            hasKey--;
+            return true;
+        }
+        return false;
     }
 }
