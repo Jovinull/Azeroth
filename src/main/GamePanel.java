@@ -21,7 +21,7 @@ import utils.SoundType;
  * Contém o loop principal de atualização/desenho e manipula o estado do jogador
  * com base nas entradas.
  */
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable, GameLoopController {
 
     private TileManager tileManager = new TileManager(this); // Gerenciador responsável por carregar e desenhar o mapa
 
@@ -82,14 +82,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         aSetter.setObject(); // Posiciona os objetos no mundo com base em posições predefinidas
         playMusic(SoundType.BLUEBOY_THEME);
-    }
-
-    /**
-     * Inicia a execução da thread de jogo com base no método run().
-     */
-    public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
     }
 
     /**
@@ -233,12 +225,32 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
+     * Inicia a execução da thread de jogo com base no método run().
+     */
+    @Override
+    public void startGameThread() {
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    /**
      * Interrompe a thread principal do jogo.
      * Usado para encerrar o loop de atualização e renderização quando o jogo
      * termina.
      * Após chamada, o jogo deixará de atualizar e redesenhar a tela.
      */
+    @Override
     public void stopGameThread() {
         gameThread = null;
+    }
+
+    /**
+     * Verifica se a thread principal do jogo está ativa.
+     *
+     * @return true se a thread não for null e estiver viva, caso contrário false
+     */
+    @Override
+    public boolean isGameRunning() {
+        return gameThread != null && gameThread.isAlive();
     }
 }
