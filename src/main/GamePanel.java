@@ -45,6 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int MAX_WORLD_COL = 50;
     public static final int MAX_WORLD_ROW = 50;
 
+    public UI ui = new UI(this);
+
     // Thread dedicada ao loop principal do jogo (uso de volatile para garantir
     // visibilidade entre threads)
     private volatile Thread gameThread;
@@ -154,6 +156,8 @@ public class GamePanel extends JPanel implements Runnable {
         // Desenha o jogador na tela utilizando o contexto gráfico 2D
         player.draw(g2);
 
+        ui.draw(g2);
+
         g2.dispose(); // Libera recursos gráficos
     }
 
@@ -203,5 +207,38 @@ public class GamePanel extends JPanel implements Runnable {
     public void playSE(SoundType type) {
         se.setFile(type);
         se.play();
+    }
+
+    /**
+     * Fornece acesso à thread principal do jogo.
+     * Esse método é útil para verificar o estado da thread (por exemplo, se o jogo
+     * está rodando).
+     *
+     * @return instância atual da thread do jogo, ou null se o jogo estiver parado
+     */
+    public Thread getGameThread() {
+        return gameThread;
+    }
+
+    /**
+     * Define a thread principal do jogo.
+     * Esse método deve ser usado com cautela, preferencialmente para interromper
+     * (setar como null)
+     * ou substituir a thread durante reinicializações controladas do jogo.
+     *
+     * @param thread Nova instância da thread a ser atribuída ao jogo
+     */
+    public void setGameThread(Thread thread) {
+        this.gameThread = thread;
+    }
+
+    /**
+     * Interrompe a thread principal do jogo.
+     * Usado para encerrar o loop de atualização e renderização quando o jogo
+     * termina.
+     * Após chamada, o jogo deixará de atualizar e redesenhar a tela.
+     */
+    public void stopGameThread() {
+        gameThread = null;
     }
 }
