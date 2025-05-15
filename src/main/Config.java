@@ -42,6 +42,11 @@ public class Config {
     public static int COLLISION_BOX_OFFSET;
 
     // ================
+    // Debug
+    // ================
+    public static boolean DEBUG_SHOW_HITBOX;
+
+    // ================
     // Caminhos de recursos
     // ================
     public static String TILE_CONFIG_PATH;
@@ -84,6 +89,8 @@ public class Config {
             TILE_CONFIG_PATH = props.getProperty("tile.config.path", "/res/tiles/tiles.json").trim();
             TILE_IMAGE_BASE = props.getProperty("tile.image.base", "/res/tiles/").trim();
             MAP_DEFAULT_PATH = props.getProperty("map.default.path", "/res/maps/map01.txt").trim();
+
+            DEBUG_SHOW_HITBOX = parseBoolean(props, "debug.showHitbox");
 
             // Cálculo de dimensões derivadas
             TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;

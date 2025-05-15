@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,11 @@ public class Player extends Entity {
      */
     private int hasKey = 0;
 
+    boolean moving = false;
+    int pixelCounter = 0;
+
+    int standCounter = 0;
+
     /**
      * Construtor do jogador.
      *
@@ -55,8 +61,8 @@ public class Player extends Entity {
         // de colisão em relação ao tamanho total do tile, evitando colisões injustas.
         // ======================================================================
         solidArea = new Rectangle();
-        solidArea.x = 8;
-        solidArea.y = 16;
+        solidArea.x = 1;
+        solidArea.y = 1;
         // Armazena os valores originais da hitbox para permitir reset pós-colisão.
         // Isso evita o deslocamento permanente da área sólida caso seja modificada
         // dinamicamente.
@@ -100,25 +106,39 @@ public class Player extends Entity {
      * Atualiza a posição e animação do jogador com base nas teclas pressionadas.
      */
     public void update() {
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-            if (keyH.upPressed) {
-                direction = Direction.UP;
-            } else if (keyH.downPressed) {
-                direction = Direction.DOWN;
-            } else if (keyH.leftPressed) {
-                direction = Direction.LEFT;
-            } else if (keyH.rightPressed) {
-                direction = Direction.RIGHT;
+
+        if (moving == false) {
+            if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+                if (keyH.upPressed) {
+                    direction = Direction.UP;
+                } else if (keyH.downPressed) {
+                    direction = Direction.DOWN;
+                } else if (keyH.leftPressed) {
+                    direction = Direction.LEFT;
+                } else if (keyH.rightPressed) {
+                    direction = Direction.RIGHT;
+                }
+
+                moving = true;
+
+                // Check Tile Collision
+                collisionOn = false;
+                gp.collisionChecker.checkTile(this);
+
+                // Verifica colisão com objetos interativos (como chaves e portas).
+                int objIndex = gp.collisionChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+            } else {
+                standCounter++;
+
+                if (standCounter == 20) {
+                    spriteNumber = 1;
+                    standCounter = 0;
+                }
             }
+        }
 
-            // Check Tile Collision
-            collisionOn = false;
-            gp.collisionChecker.checkTile(this);
-
-            // Verifica colisão com objetos interativos (como chaves e portas).
-            int objIndex = gp.collisionChecker.checkObject(this, true);
-            pickUpObject(objIndex);
-
+        if (moving == true) {
             // IF Collision is false, playercan move
             if (collisionOn == false) {
                 switch (direction) {
@@ -142,6 +162,12 @@ public class Player extends Entity {
             if (spriteCounter > 10) {
                 spriteNumber = (spriteNumber == 1) ? 2 : 1;
                 spriteCounter = 0;
+            }
+            pixelCounter += speed;
+
+            if (pixelCounter == 48) {
+                moving = false;
+                pixelCounter = 0;
             }
         }
     }
@@ -225,6 +251,19 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, screenX, screenY, Config.TILE_SIZE, Config.TILE_SIZE, null);
+        // Verifica se a flag de debug está ativada antes de desenhar a hitbox do
+        // jogador.
+        // Essa lógica auxilia na depuração de colisões e alinhamento visual, sem
+        // impactar a execução normal do jogo.
+        if (Config.DEBUG_SHOW_HITBOX) {
+            g2.setColor(Color.red); // Cor da borda da hitbox (padrão: vermelho)
+            g2.drawRect(
+                    screenX + solidArea.x, // Posição X relativa na tela
+                    screenY + solidArea.y, // Posição Y relativa na tela
+                    solidArea.width, // Largura da hitbox
+                    solidArea.height // Altura da hitbox
+            );
+        }
     }
 
     /**
